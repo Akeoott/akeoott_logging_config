@@ -168,3 +168,28 @@ class LogConfig:
         for handler in list(target_logger.handlers):
             target_logger.removeHandler(handler)
         target_logger.addHandler(logging.NullHandler())
+
+if __name__ == "__main__":
+    def test():
+        #? Tests
+        log_config = LogConfig(logger_name="MainLogger")
+
+        log_config.setup(
+            print_log=True,
+            save_log=False,
+            log_level=logging.DEBUG
+        )
+        log = log_config.logger
+
+        log.info("File was run directly...")
+        log.info("Testing program.")
+        print("-" * 30)
+        log.info("Application has started.")
+        # ... application logic ...
+        log.debug("This is a debug message and will not be shown because the level is INFO.")
+        log.warning("Something potentially unexpected happened.")
+        log.error("Something unexpected happened.")
+        # ... more logic ...
+        log.info("Application is shutting down.")
+        print("-" * 30)
+    test()
