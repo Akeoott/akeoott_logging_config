@@ -10,6 +10,7 @@ class LogConfig:
     A class to configure the logging for your python application.
     Allows activation, console output, and file saving for a specific logger instance.
     """
+
     def __init__(self, logger_name: str = "AkeoottLogger"):
         """
         Initializes the LogConfig instance for a specific logger.
@@ -20,6 +21,7 @@ class LogConfig:
                                 they will configure the same underlying logger.
                                 Defaults to "AkeoottLogger".
         """
+
         self.logger = logging.getLogger(logger_name)
         self.logger.propagate = False
 
@@ -44,6 +46,7 @@ class LogConfig:
               thirdparty_logger_target: str | None = None,
               thirdparty_logger_level: int = logging.CRITICAL + 1,
         ):
+
         """
         Configures this specific logger instance.
 
@@ -89,7 +92,6 @@ class LogConfig:
         # File Handler
         if save_log:
             final_log_file_path = self._resolve_log_file_path(log_file_path, log_file_name)
-
             # Check that directory exists
             final_log_file_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -103,6 +105,7 @@ class LogConfig:
             except Exception as e:
                 # Inform user via console if file logging fails (Hope its not my fault)
                 self.logger.error(f"[{self.logger.name}] Failed to set up file logging to '{final_log_file_path}': {e}")
+
                 if not print_log: # If console isn't already active, add a temporary one to report
                     temp_console_handler = logging.StreamHandler(sys.stderr)
                     temp_console_handler.setFormatter(formatter)
@@ -118,17 +121,20 @@ class LogConfig:
 
     def _clear_handlers(self):
         """Removes all handlers from this specific logger."""
+
         # Using list() to iterate over a copy, as removing handlers modifies the list
         for handler in list(self.logger.handlers):
             self.logger.removeHandler(handler)
 
     def _resolve_log_file_path(self, log_file_path, log_file_name):
         """Determines the final absolute path for the log file."""
+
         if log_file_path == 'script_dir':
             # Get the path of the main script that initiated the process
             if hasattr(sys.modules['__main__'], '__file__'):
                 script_dir = Path(sys.modules['__main__'].__file__).parent  # type: ignore
                 return script_dir / log_file_name
+
             else:
                 # Fallback for interactive sessions
                 self.logger.warning(
@@ -136,22 +142,29 @@ class LogConfig:
                     "Logging to current directory instead."
                 )
                 return Path.cwd() / log_file_name
+
         elif isinstance(log_file_path, (str, Path)):
             potential_path = Path(log_file_path)
+
             if potential_path.is_dir():
                 return potential_path / log_file_name
+
             else:
                 # Assume it's a full file path like "path/to/my_log.log"
                 return potential_path
+
         else: # Default if save_log is True but no path is provided
             self.logger.info(f"[{self.logger.name}] No log_file_path provided, defaulting to current directory.")
             return Path.cwd() / log_file_name
-        
+
     def silence_thirdparty_loggers(self, thirdparty_logger_target: str | None, thirdparty_logger_level: int):
+
         if not thirdparty_logger_target:
             return
+
         target_logger = logging.getLogger(thirdparty_logger_target)
         target_logger.setLevel(thirdparty_logger_level)
+
         for handler in list(target_logger.handlers):
             target_logger.removeHandler(handler)
         target_logger.addHandler(logging.NullHandler())
