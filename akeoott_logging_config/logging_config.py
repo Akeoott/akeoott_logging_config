@@ -2,7 +2,7 @@ import logging
 import sys
 from pathlib import Path
 
-_DEFAULT_LOG_FORMAT = '%(levelname)s (%(asctime)s.%(msecs)03d)     %(message)s [Line: %(lineno)d in %(filename)s - %(funcName)s]'
+_DEFAULT_LOG_FORMAT = '%(levelname)s\t(%(asctime)s.%(msecs)03d)\t%(message)s\t[Line: %(lineno)d in %(filename)s - %(funcName)s]'
 _DEFAULT_DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
 
 class LogConfig:
