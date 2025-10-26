@@ -2,8 +2,9 @@ import logging
 import sys
 from pathlib import Path
 
-_DEFAULT_LOG_FORMAT = '%(levelname)s\t(%(asctime)s.%(msecs)03d)\t%(message)s\t[Line: %(lineno)d in %(filename)s - %(funcName)s]'
-_DEFAULT_DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
+_DEFAULT_LOG_FORMAT = "%(levelname)s\t(%(asctime)s.%(msecs)03d)\t%(message)s\t[Line: %(lineno)d in %(filename)s - %(funcName)s]"
+_DEFAULT_DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
+
 
 class LogConfig:
     """
@@ -31,22 +32,22 @@ class LogConfig:
         if not self.logger.handlers:
             self.logger.addHandler(logging.NullHandler())
 
-        self._is_configured = False # Track if configuration has been applied
+        self._is_configured = False  # Track if configuration has been applied
 
-    def setup(self,
-              activate_logging: bool = True,
-              print_log: bool = True,
-              save_log: bool = False,
-              log_file_path: str | Path | None = None,
-              log_file_name: str = "logs.log",
-              log_level: int = logging.INFO,
-              log_format: str = _DEFAULT_LOG_FORMAT,
-              date_format: str = _DEFAULT_DATE_FORMAT,
-              log_file_mode: str = 'a',
-              thirdparty_logger_target: str | None = None,
-              thirdparty_logger_level: int = logging.CRITICAL + 1,
-        ):
-
+    def setup(
+        self,
+        activate_logging: bool = True,
+        print_log: bool = True,
+        save_log: bool = False,
+        log_file_path: str | Path | None = None,
+        log_file_name: str = "logs.log",
+        log_level: int = logging.INFO,
+        log_format: str = _DEFAULT_LOG_FORMAT,
+        date_format: str = _DEFAULT_DATE_FORMAT,
+        log_file_mode: str = "a",
+        thirdparty_logger_target: str | None = None,
+        thirdparty_logger_level: int = logging.CRITICAL + 1,
+    ):
         """
         Configures this specific logger instance.
 
@@ -73,7 +74,7 @@ class LogConfig:
             # If logging is explicitly deactivated, set level to beyond CRITICAL
             # and add a NullHandler for no logging output heh.
             self.logger.addHandler(logging.NullHandler())
-            self.logger.setLevel(logging.CRITICAL + 1) # Disables all logging
+            self.logger.setLevel(logging.CRITICAL + 1)  # Disables all logging
             self._is_configured = True
             return
 
@@ -91,33 +92,48 @@ class LogConfig:
 
         # File Handler
         if save_log:
-            final_log_file_path = self._resolve_log_file_path(log_file_path, log_file_name)
+            final_log_file_path = self._resolve_log_file_path(
+                log_file_path, log_file_name
+            )
             # Check that directory exists
             final_log_file_path.parent.mkdir(parents=True, exist_ok=True)
 
             try:
-                file_handler = logging.FileHandler(final_log_file_path, mode=log_file_mode, encoding='utf-8')
+                file_handler = logging.FileHandler(
+                    final_log_file_path, mode=log_file_mode, encoding="utf-8"
+                )
                 file_handler.setLevel(log_level)
                 file_handler.setFormatter(formatter)
                 self.logger.addHandler(file_handler)
                 # Use self.logger to log its own config messages
-                self.logger.info(f"[{self.logger.name}] Logging to file '{final_log_file_path}' activated (mode: '{log_file_mode}').")
+                self.logger.info(
+                    f"[{self.logger.name}] Logging to file '{final_log_file_path}' activated (mode: '{log_file_mode}')."
+                )
             except Exception as e:
                 # Inform user via console if file logging fails (Hope its not my fault)
-                self.logger.error(f"[{self.logger.name}] Failed to set up file logging to '{final_log_file_path}': {e}")
+                self.logger.error(
+                    f"[{self.logger.name}] Failed to set up file logging to '{final_log_file_path}': {e}"
+                )
 
-                if not print_log: # If console isn't already active, add a temporary one to report
+                if (
+                    not print_log
+                ):  # If console isn't already active, add a temporary one to report
                     temp_console_handler = logging.StreamHandler(sys.stderr)
                     temp_console_handler.setFormatter(formatter)
                     self.logger.addHandler(temp_console_handler)
-                    self.logger.error(f"[{self.logger.name}] File logging failed, reverting to console for this message.")
+                    self.logger.error(
+                        f"[{self.logger.name}] File logging failed, reverting to console for this message."
+                    )
                     self.logger.removeHandler(temp_console_handler)
 
-        self.silence_thirdparty_loggers(thirdparty_logger_target, thirdparty_logger_level)
+        self.silence_thirdparty_loggers(
+            thirdparty_logger_target, thirdparty_logger_level
+        )
 
         self._is_configured = True
-        self.logger.info(f"[{self.logger.name}] Logging configured. Level: {logging.getLevelName(log_level)}")
-
+        self.logger.info(
+            f"[{self.logger.name}] Logging configured. Level: {logging.getLevelName(log_level)}"
+        )
 
     def _clear_handlers(self):
         """Removes all handlers from this specific logger."""
@@ -129,10 +145,10 @@ class LogConfig:
     def _resolve_log_file_path(self, log_file_path, log_file_name):
         """Determines the final absolute path for the log file."""
 
-        if log_file_path == 'script_dir':
+        if log_file_path == "script_dir":
             # Get the path of the main script that initiated the process
-            if hasattr(sys.modules['__main__'], '__file__'):
-                script_dir = Path(sys.modules['__main__'].__file__).parent  # type: ignore
+            if hasattr(sys.modules["__main__"], "__file__"):
+                script_dir = Path(sys.modules["__main__"].__file__).parent  # type: ignore
                 return script_dir / log_file_name
 
             else:
@@ -153,11 +169,15 @@ class LogConfig:
                 # Assume it's a full file path like "path/to/my_log.log"
                 return potential_path
 
-        else: # Default if save_log is True but no path is provided
-            self.logger.info(f"[{self.logger.name}] No log_file_path provided, defaulting to current directory.")
+        else:  # Default if save_log is True but no path is provided
+            self.logger.info(
+                f"[{self.logger.name}] No log_file_path provided, defaulting to current directory."
+            )
             return Path.cwd() / log_file_name
 
-    def silence_thirdparty_loggers(self, thirdparty_logger_target: str | None, thirdparty_logger_level: int):
+    def silence_thirdparty_loggers(
+        self, thirdparty_logger_target: str | None, thirdparty_logger_level: int
+    ):
 
         if not thirdparty_logger_target:
             return
@@ -169,16 +189,14 @@ class LogConfig:
             target_logger.removeHandler(handler)
         target_logger.addHandler(logging.NullHandler())
 
+
 if __name__ == "__main__":
+
     def test():
-        #? Tests
+        # ? Tests
         log_config = LogConfig(logger_name="MainLogger")
 
-        log_config.setup(
-            print_log=True,
-            save_log=False,
-            log_level=logging.DEBUG
-        )
+        log_config.setup(print_log=True, save_log=False, log_level=logging.DEBUG)
         log = log_config.logger
 
         log.info("File was run directly...")
@@ -186,10 +204,13 @@ if __name__ == "__main__":
         print("-" * 30)
         log.info("Application has started.")
         # ... application logic ...
-        log.debug("This is a debug message and will not be shown because the level is INFO.")
+        log.debug(
+            "This is a debug message and will not be shown because the level is INFO."
+        )
         log.warning("Something potentially unexpected happened.")
         log.error("Something unexpected happened.")
         # ... more logic ...
         log.info("Application is shutting down.")
         print("-" * 30)
+
     test()
