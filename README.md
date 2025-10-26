@@ -1,12 +1,15 @@
-# akeoott-logging-config: The Effortless Python Logging Library
+# akeoott_logging_config
 
 ![PyPI - Version](https://img.shields.io/pypi/v/LogConfig.svg)
-**Accidental yet powerful: a simple Python library for robust, configurable logging.**
 
-akeoott-logging-config provides an incredibly easy-to-use, modular, and enterprise-ready logging solution designed to simplify logging setup for Python applications of any scale, from quick scripts to complex backend systems.<br>
+akeoott_logging_config provides an incredibly easy-to-use, modular logging solution designed to simplify logging setup for Python applications of small to medium scale, from quick scripts to medium sized applications.<br>
 
 > [!WARNING]
 > This project is licensed under the GNU Lesser General Public License v3.0 (LGPL-3.0) - see the [LICENSE](https://www.gnu.org/licenses/lgpl-3.0.html) website or [LICENSE](https://github.com/Akeoottt/LogConfig/blob/main/LICENCE) file for details.
+
+> [!NOTE]
+> This logger is mainly for my personal use.<br>
+> It's able to get the job done but it's not meant for systems that require active maintaining of it's dependencies and stable reliablility. 
 
 ## ✨ Features
 
@@ -19,10 +22,13 @@ akeoott-logging-config provides an incredibly easy-to-use, modular, and enterpri
 * **Robust Error Reporting:** Logs internal errors during logging setup itself (e.g., file writing issues) to ensure visibility.
 * **Cross-Platform Compatibility:** Utilizes `pathlib` for robust and platform-independent file path management.
 
+> Third party log silencing is planned to be rewritten.
+> Currently not functional under most situations.
+
 ## 🚀 Installation
 
-You can install `akeoott-logging-config` directly from PyPI using pip:
+You can install `akeoott_logging_config` directly from PyPI using pip:
 
 ```bash
-pip install akeoott-logging-config
+pip install akeoott_logging_config
 ```
