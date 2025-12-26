@@ -4,7 +4,7 @@
 > This repository will no longer be actively maintained.<br>
 > Don't bother trying to use it!
 
-![PyPI - Version](https://img.shields.io/pypi/v/LogConfig.svg)
+![PyPI - Version](https://img.shields.io/pypi/v/akeoott_logging_config.svg?style=for-the-badge&labelColor=%231a1b1f&color=%23a8c7ff)
 
 akeoott_logging_config provides an incredibly easy-to-use, modular logging solution designed to simplify logging setup for Python applications of small to medium scale, from quick scripts to medium sized applications.<br>
 
