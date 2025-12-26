@@ -1,13 +1,12 @@
 # akeoott_logging_config
 
-## This repository will no longer be actively maintained
+> [!CAUTION]
+> This repository will no longer be actively maintained.<br>
+> Don't bother trying to use it!
 
 ![PyPI - Version](https://img.shields.io/pypi/v/LogConfig.svg)
 
 akeoott_logging_config provides an incredibly easy-to-use, modular logging solution designed to simplify logging setup for Python applications of small to medium scale, from quick scripts to medium sized applications.<br>
-
-> [!WARNING]
-> This project is licensed under the GNU Lesser General Public License v3.0 (LGPL-3.0) - see the [LICENSE](https://www.gnu.org/licenses/lgpl-3.0.html) website or [LICENSE](https://github.com/Akeoottt/LogConfig/blob/main/LICENCE) file for details.
 
 > [!NOTE]
 > This logger is mainly for my personal use.<br>
